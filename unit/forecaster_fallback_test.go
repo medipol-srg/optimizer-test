@@ -29,7 +29,7 @@ func rampSamples(n int, lo, hi float64) []float64 {
 // Test 1a: valid input returns 15 forecast points in 0-1 range
 func TestHoltWinters_ValidInput(t *testing.T) {
 	hw := forecaster.NewHoltWintersForecaster(zaptest.NewLogger(t))
-	samples := rampSamples(60, 0.1, 0.5)
+	samples := rampSamples(120, 0.1, 0.5)
 
 	resp, err := hw.Predict(context.Background(), samples)
 	if err != nil {
@@ -41,8 +41,8 @@ func TestHoltWinters_ValidInput(t *testing.T) {
 	if resp.PredictionLength != 15 {
 		t.Errorf("expected PredictionLength=15, got %d", resp.PredictionLength)
 	}
-	if resp.ContextLength != 60 {
-		t.Errorf("expected ContextLength=60, got %d", resp.ContextLength)
+	if resp.ContextLength != 120 {
+		t.Errorf("expected ContextLength=120, got %d", resp.ContextLength)
 	}
 }
 
@@ -50,7 +50,7 @@ func TestHoltWinters_ValidInput(t *testing.T) {
 func TestHoltWinters_StepIndexing(t *testing.T) {
 	hw := forecaster.NewHoltWintersForecaster(zaptest.NewLogger(t))
 
-	resp, err := hw.Predict(context.Background(), rampSamples(60, 0.2, 0.4))
+	resp, err := hw.Predict(context.Background(), rampSamples(120, 0.2, 0.4))
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -65,7 +65,7 @@ func TestHoltWinters_StepIndexing(t *testing.T) {
 func TestHoltWinters_PointOrdering(t *testing.T) {
 	hw := forecaster.NewHoltWintersForecaster(zaptest.NewLogger(t))
 
-	resp, err := hw.Predict(context.Background(), rampSamples(60, 0.1, 0.6))
+	resp, err := hw.Predict(context.Background(), rampSamples(120, 0.1, 0.6))
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -84,7 +84,7 @@ func TestHoltWinters_ConstantSeries(t *testing.T) {
 	hw := forecaster.NewHoltWintersForecaster(zaptest.NewLogger(t))
 
 	const val = 0.35
-	samples := make([]float64, 60)
+	samples := make([]float64, 120)
 	for i := range samples {
 		samples[i] = val
 	}
